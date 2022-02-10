@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_request.dart';
+import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_response.dart';
 import 'package:stack_answers_lite/app/models/models.dart';
 
 void main() {
@@ -36,6 +38,24 @@ void main() {
       final Comment comment = Comment.fromJson(commentJson);
       expect(comment.comment, "sounds like a good solution to me!");
       expect(comment.toJson(), commentJson);
+    });
+  });
+
+  group("firebase Models", () {
+    test("AuthResponse", () async {
+      final authData = File('test/test_data/auth_response.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthResponse auth = AuthResponse.fromJson(authJson);
+      expect(auth.localId, "vPljq5bVCPQXpqWaKhcENJR7bgv2");
+      expect(auth.toJson(), authJson);
+    });
+
+    test("AuthRequest", () async {
+      final authData = File('test/test_data/auth_request.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthRequest auth = AuthRequest.fromJson(authJson);
+      expect(auth.email, "test@teest.com");
+      expect(auth.toJson(), authJson);
     });
   });
 }
