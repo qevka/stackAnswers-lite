@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 
 void main() {
+  testLogin();
   runApp(
     GetMaterialApp(
       title: "Application",
@@ -12,4 +13,10 @@ void main() {
       debugShowCheckedModeBanner: false,
     ),
   );
+}
+
+void testLogin() async {
+  //todo handle any errors here.
+
+  // print(e);
 }

@@ -1,6 +1,10 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_models.dart';
+import 'package:stack_answers_lite/app/data/services/firebase_auth/firebase_auth.dart';
+import 'package:stack_answers_lite/app/models/users/user.dart';
 
 class LoginController extends GetxController {
   Rx<int> logoPosition = Rx<int>(-100);
@@ -24,12 +28,15 @@ class LoginController extends GetxController {
   }
 
   Future<String?> signupUser(SignupData data) async {
-    // try {
-    //   // call signup api here
-    //   }
-    // } catch (e) {
-    //   return "login failed";
-    // }
+    final auth = FirebaseAuth(client: http.Client());
+    AuthRequest request = AuthRequest(email: data.name!, password: data.password!);
+    try {
+      User? user = await auth.signup(userRequest: request);
+      print(user!.toJson());
+    } catch (e) {
+      print(e);
+      return "login failed";
+    }
     return 'User registration complete!';
   }
 

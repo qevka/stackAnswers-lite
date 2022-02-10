@@ -7,7 +7,7 @@ part 'auth_error_response.g.dart';
 @JsonSerializable(explicitToJson: true)
 
 /// [AuthErrorResponse] If the request fails this is the response you will get from the Auth Rest API.
-class AuthErrorResponse {
+class AuthErrorResponse implements Exception {
   /// [code] The status code of the http request
   final int code;
 
