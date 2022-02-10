@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_request.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_response.dart';
+import 'package:stack_answers_lite/app/data/services/firebase_auth/authModels.dart';
 import 'package:stack_answers_lite/app/models/models.dart';
 
 void main() {
@@ -55,6 +54,22 @@ void main() {
       final authJson = jsonDecode(await authData.readAsString());
       final AuthRequest auth = AuthRequest.fromJson(authJson);
       expect(auth.email, "test@teest.com");
+      expect(auth.toJson(), authJson);
+    });
+
+    test("AuthError", () async {
+      final authData = File('test/test_data/auth_error.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthError auth = AuthError.fromJson(authJson);
+      expect(auth.message, AuthErrorMessage.EMAIL_NOT_FOUND);
+      expect(auth.toJson(), authJson);
+    });
+
+    test("AuthErrorResponse", () async {
+      final authData = File('test/test_data/auth_error_response.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthErrorResponse auth = AuthErrorResponse.fromJson(authJson);
+      expect(auth.code, 400);
       expect(auth.toJson(), authJson);
     });
   });
