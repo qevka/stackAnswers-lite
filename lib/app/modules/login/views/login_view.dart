@@ -12,7 +12,7 @@ class LoginView extends GetView<LoginController> {
         children: [
           FlutterLogin(
             theme: LoginTheme(primaryColor: Colors.blue),
-            title: "SeedDeck",
+            title: "StackAnswers",
             titleTag: "title",
             navigateBackAfterRecovery: true,
             onConfirmRecover: controller.signupConfirm,
@@ -56,7 +56,7 @@ class LoginView extends GetView<LoginController> {
               duration: Duration(milliseconds: 1450),
               top: controller.logoPosition.value.toDouble(),
               child: Text(
-                "🍅",
+                "💡",
                 style: TextStyle(fontSize: 60),
               ),
             );
