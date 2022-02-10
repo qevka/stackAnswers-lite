@@ -26,7 +26,7 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage(
-      name: _Paths.SPLASH,
+      name: _Paths.splash,
       page: () => SplashView(),
       binding: SplashBinding(),
     ),
