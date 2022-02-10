@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/authModels.dart';
+import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_models.dart';
 import 'package:stack_answers_lite/app/models/models.dart';
 
 void main() {
