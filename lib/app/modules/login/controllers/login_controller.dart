@@ -1,9 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:get/get.dart';
-
-class LoginController extends GetxController {
-  Rx<int> logoPosition = Rx<int>(-100);
+import 'package:get/getnt> logoPosition = Rx<int>(-100);
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   @override
@@ -13,12 +11,14 @@ class LoginController extends GetxController {
   }
 
   Future<String?> loginUser(LoginData data) async {
-    // try {
-    //   // call Signin API here
-    //   }
-    // } catch (e) {
-    //   return "login failed";
-    // }
+    AuthRequest authRequest = AuthRequest(email: data.name, password: data.password);
+    try {
+      await FirebaseAuth.login(userRequest: authRequest);
+    } on AuthErrorResponse catch (e) {
+      print(e.message);
+      return "error";
+    }
+    print(FirebaseAuth.instance.currentUser.toJson());
     return "Login complete!";
   }
 
