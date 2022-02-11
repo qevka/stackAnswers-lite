@@ -20,11 +20,11 @@ class FirebaseAuth {
   final http.Client _client = http.Client();
 
   /// [currentUser] The currently signed in user.
-  late final User currentUser;
+  late final User? currentUser;
 
   /// [authCredentials] The credentials of the currently signed in user this can be used to refresh auth tokens and
   /// authorize REST API calls.
-  late final AuthResponse authCredentials;
+  late final AuthResponse? authCredentials;
 
   final BehaviorSubject<User> _authUserSubject = BehaviorSubject<User>();
 
@@ -60,7 +60,7 @@ class FirebaseAuth {
     // Update the current user
     instance.currentUser = authResponse.toUser();
     // Emit a new user in the users stream
-    instance._authUserSubject.add(instance.currentUser);
+    instance._authUserSubject.add(instance.currentUser!);
     // Store the credentials to disk. This makes grabbing the refresh token easy if needed.
     GetStorage box = GetStorage();
     box.write('credentials', jsonEncode(authResponse.toJson()));
@@ -80,7 +80,7 @@ class FirebaseAuth {
     // Update current user
     instance.currentUser = authResponse.toUser();
     // Emit a new user in the users stream
-    instance._authUserSubject.add(instance.currentUser);
+    instance._authUserSubject.add(instance.currentUser!);
     // Store the credentials to disk. This makes grabbing the refresh token easy if needed.
     GetStorage box = GetStorage();
     // Set the local credentials to the newly fetched ones.

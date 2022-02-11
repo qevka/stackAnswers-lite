@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:get/getnt> logoPosition = Rx<int>(-100);
+import 'package:get/get.dart';
+
+class LoginController extends GetxController {
+  Rx<int> logoPosition = Rx<int>(-100);
+
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   @override
@@ -18,7 +22,7 @@ import 'package:get/getnt> logoPosition = Rx<int>(-100);
       print(e.message);
       return "error";
     }
-    print(FirebaseAuth.instance.currentUser.toJson());
+    print(FirebaseAuth.instance.currentUser!.toJson());
     return "Login complete!";
   }
 

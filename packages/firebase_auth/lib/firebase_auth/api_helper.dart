@@ -60,7 +60,7 @@ class ApiHelper {
       return responseJson;
     } else if (response.statusCode >= 400 && response.statusCode <= 499) {
       //Todo make this class more extensible to handle REST API calls to firestore as well.
-      throw AuthErrorResponse.fromJson(jsonDecode(response.body));
+      throw AuthErrorResponse.fromJson(jsonDecode(response.body)['error']);
     }
   }
 }
