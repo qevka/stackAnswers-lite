@@ -44,7 +44,16 @@ class LoginController extends GetxController {
     return "Login complete!";
   }
 
-  Future<String?> recoverPassword(String name) async {}
+  Future<String?> recoverPassword(String email) async {
+    try {
+      await FirebaseAuth.resetPassword(email: email);
+    } on AuthErrorResponse catch (e) {
+      debugPrint(e.message.toString());
+      return e.message.toString();
+    }
+    Get.toNamed(Routes.login);
+    return "Email Sent!";
+  }
 
   Future<String?> signupConfirm(String error, LoginData data) {
     return Future.delayed(loginTime).then((_) {

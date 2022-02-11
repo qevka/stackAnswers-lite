@@ -72,10 +72,17 @@ class FirebaseAuth {
   /// for future requests and also user IDs for looking up documents.
   static Future<User?> login({required AuthRequest userRequest}) async {
     Map<String, String> headers = {"Content-Type": 'application/json'};
-    dynamic response = await ApiHelper(client: instance._client).post(
-        headers: headers,
-        url: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${instance.apiKey}',
-        param: userRequest.toJson());
+    dynamic response;
+    try {
+      response = await ApiHelper(client: instance._client).post(
+          headers: headers,
+          url: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${instance.apiKey}',
+          param: userRequest.toJson());
+    } on AuthErrorResponse catch (e) {
+      debugPrint(e.message.toString());
+      rethrow;
+    }
+
     AuthResponse authResponse = AuthResponse.fromJson(response);
     // Update current user
     instance.currentUser = authResponse.toUser();
@@ -87,6 +94,22 @@ class FirebaseAuth {
     _instance.authCredentials = authResponse;
     box.write('credentials', jsonEncode(authResponse.toJson()));
     return instance.currentUser;
+  }
+
+  /// [resetPassword] This function sends a password reset email from firebase.
+  static Future<User?> resetPassword({required String email}) async {
+    Map<String, String> headers = {"Content-Type": 'application/json'};
+    dynamic response;
+    try {
+      response = await ApiHelper(client: instance._client).post(
+          headers: headers,
+          url: 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${instance.apiKey}',
+          param: {"requestType": "PASSWORD_RESET", "email": email});
+    } on AuthErrorResponse catch (e) {
+      debugPrint(response);
+      debugPrint(e.message.toString());
+      rethrow;
+    }
   }
 
   // Todo use this function when invalid/expired token exception is thrown.

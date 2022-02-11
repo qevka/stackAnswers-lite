@@ -47,8 +47,8 @@ class LoginView extends GetView<LoginController> {
               } else {}
               // TODO implement going to the homeView here.
             },
-            onRecoverPassword: (name) {
-              return controller.recoverPassword(name);
+            onRecoverPassword: (email) {
+              return controller.recoverPassword(email);
               // Show new password dialog
             },
           ),

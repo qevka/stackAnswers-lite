@@ -62,5 +62,13 @@ void main() {
       expect(auth.userId, "vPljq5bVCPQXpqWaKhcENJR7bgv2");
       expect(auth.toJson(), authJson);
     });
+
+    test("TokenResponse", () async {
+      final authData = File('packages/firebase_auth/test/test_data/auth_response_password_reset.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthResponsePasswordReset auth = AuthResponsePasswordReset.fromJson(authJson);
+      expect(auth.email, "support@qevka.com");
+      expect(auth.toJson(), authJson);
+    });
   });
 }
