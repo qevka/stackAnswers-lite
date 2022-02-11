@@ -24,7 +24,7 @@ class FirebaseAuth {
 
   /// [authCredentials] The credentials of the currently signed in user this can be used to refresh auth tokens and
   /// authorize REST API calls.
-  late final AuthResponse? authCredentials;
+  late final AuthResponseLogin? authCredentials;
 
   final BehaviorSubject<User> _authUserSubject = BehaviorSubject<User>();
 
@@ -56,7 +56,7 @@ class FirebaseAuth {
       debugPrint(e.toJson().toString() + stacktrace.toString());
       rethrow;
     }
-    AuthResponse authResponse = AuthResponse.fromJson(response);
+    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(response);
     // Update the current user
     instance.currentUser = authResponse.toUser();
     // Emit a new user in the users stream
@@ -83,7 +83,7 @@ class FirebaseAuth {
       rethrow;
     }
 
-    AuthResponse authResponse = AuthResponse.fromJson(response);
+    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(response);
     // Update current user
     instance.currentUser = authResponse.toUser();
     // Emit a new user in the users stream
@@ -118,7 +118,7 @@ class FirebaseAuth {
     // look up credentials from disk.
     String jsonData = box.read('credentials');
     // turn them into a AuthResponse Object
-    AuthResponse authResponse = AuthResponse.fromJson(jsonDecode(jsonData));
+    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(jsonDecode(jsonData));
     // Turn the response into a RequestToken
     AuthRequestToken requestToken = AuthRequestToken(refresh_token: authResponse.refreshToken);
     Map<String, String> headers = {"Content-Type": 'application/json'};
@@ -135,7 +135,7 @@ class FirebaseAuth {
     }
     AuthResponseToken responseToken = AuthResponseToken.fromJson(response);
     // now that we have the token we need to update the credentials and store it.
-    AuthResponse newCred = responseToken.toAuthResponse(email: authResponse.email);
+    AuthResponseLogin newCred = responseToken.toAuthResponse(email: authResponse.email);
     _instance.authCredentials = newCred;
     box.write('credentials', jsonEncode(newCred.toJson()));
   }

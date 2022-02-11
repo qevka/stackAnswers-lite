@@ -14,10 +14,10 @@ void main() {
       expect(user.toJson(), userJson);
     });
 
-    test("AuthResponse", () async {
-      final authData = File('packages/firebase_auth/test/test_data/auth_response.json');
+    test("AuthResponseLogin", () async {
+      final authData = File('packages/firebase_auth/test/test_data/auth_response_login.json');
       final authJson = jsonDecode(await authData.readAsString());
-      final AuthResponse auth = AuthResponse.fromJson(authJson);
+      final AuthResponseLogin auth = AuthResponseLogin.fromJson(authJson);
       expect(auth.userId, "vPljq5bVCPQXpqWaKhcENJR7bgv2");
       expect(auth.toJson(), authJson);
     });

@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_response.dart';
+part of 'auth_response_login.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) => AuthResponse(
+AuthResponseLogin _$AuthResponseLoginFromJson(Map<String, dynamic> json) =>
+    AuthResponseLogin(
       kind: json['kind'] as String?,
       userId: json['localId'] as String,
       email: json['email'] as String,
@@ -17,7 +18,7 @@ AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) => AuthResponse(
       expiresIn: json['expiresIn'] as String,
     );
 
-Map<String, dynamic> _$AuthResponseToJson(AuthResponse instance) =>
+Map<String, dynamic> _$AuthResponseLoginToJson(AuthResponseLogin instance) =>
     <String, dynamic>{
       'kind': instance.kind,
       'localId': instance.userId,

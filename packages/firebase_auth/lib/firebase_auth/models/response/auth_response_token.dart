@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:json_annotation/json_annotation.dart';
 
-import 'auth_response.dart';
+import 'auth_response_login.dart';
 
 part 'auth_response_token.g.dart';
 
@@ -22,8 +22,8 @@ class AuthResponseToken {
   factory AuthResponseToken.fromJson(Map<String, dynamic> json) => _$AuthResponseTokenFromJson(json);
   Map<String, dynamic> toJson() => _$AuthResponseTokenToJson(this);
 
-  AuthResponse toAuthResponse({required String email}) {
-    return AuthResponse(
+  AuthResponseLogin toAuthResponse({required String email}) {
+    return AuthResponseLogin(
         idToken: id_token,
         refreshToken: refresh_token,
         registered: null,
