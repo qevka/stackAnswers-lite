@@ -44,9 +44,7 @@ class LoginView extends GetView<LoginController> {
             onSubmitAnimationCompleted: () {
               if (FirebaseAuth.instance.currentUser != null) {
                 Get.toNamed(Routes.home);
-              } else {
-                print(FirebaseAuth.instance.currentUser!.email);
-              }
+              } else {}
               // TODO implement going to the homeView here.
             },
             onRecoverPassword: (name) {
