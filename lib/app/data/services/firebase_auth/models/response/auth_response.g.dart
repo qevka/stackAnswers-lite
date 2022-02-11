@@ -7,12 +7,12 @@ part of 'auth_response.dart';
 // **************************************************************************
 
 AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) => AuthResponse(
-      kind: json['kind'] as String,
-      localId: json['localId'] as String,
+      kind: json['kind'] as String?,
+      userId: json['localId'] as String,
       email: json['email'] as String,
-      displayName: json['displayName'] as String,
+      displayName: json['displayName'] as String?,
       idToken: json['idToken'] as String,
-      registered: json['registered'] as bool,
+      registered: json['registered'] as bool?,
       refreshToken: json['refreshToken'] as String,
       expiresIn: json['expiresIn'] as String,
     );
@@ -20,7 +20,7 @@ AuthResponse _$AuthResponseFromJson(Map<String, dynamic> json) => AuthResponse(
 Map<String, dynamic> _$AuthResponseToJson(AuthResponse instance) =>
     <String, dynamic>{
       'kind': instance.kind,
-      'localId': instance.localId,
+      'localId': instance.userId,
       'email': instance.email,
       'displayName': instance.displayName,
       'idToken': instance.idToken,

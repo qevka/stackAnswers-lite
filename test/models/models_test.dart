@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/auth_models.dart';
+import 'package:stack_answers_lite/app/data/services/firebase_auth/models/auth_models.dart';
 import 'package:stack_answers_lite/app/models/models.dart';
 
 void main() {
@@ -45,7 +45,7 @@ void main() {
       final authData = File('test/test_data/auth_response.json');
       final authJson = jsonDecode(await authData.readAsString());
       final AuthResponse auth = AuthResponse.fromJson(authJson);
-      expect(auth.localId, "vPljq5bVCPQXpqWaKhcENJR7bgv2");
+      expect(auth.userId, "vPljq5bVCPQXpqWaKhcENJR7bgv2");
       expect(auth.toJson(), authJson);
     });
 
@@ -70,6 +70,23 @@ void main() {
       final authJson = jsonDecode(await authData.readAsString());
       final AuthErrorResponse auth = AuthErrorResponse.fromJson(authJson);
       expect(auth.code, 400);
+      expect(auth.toJson(), authJson);
+    });
+
+    test("AuthRequestToken", () async {
+      final authData = File('test/test_data/auth_request_token.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthRequestToken auth = AuthRequestToken.fromJson(authJson);
+      expect(auth.refresh_token,
+          "AIwUaOmDR-tdK6JaAogdWPds3dIuAk8ZYCPiFm3XZWGdvxdE1YfM3EOazFH7X4xoXeCPdEq5gERNsvjbJpArNuS3wbL19vXPBUKprWFcqMVjEzysXE9sszT0NcF93PMGydqe1aArC6XZOC80T7rvdJATYqyJjkBKjIxJgeVbvYO0Kgf6GcSclw7cjrEQQAGaZfMjF9NwJnZ1rJ9XfYsdYhUWTADWrdt41g");
+      expect(auth.toJson(), authJson);
+    });
+
+    test("TokenResponse", () async {
+      final authData = File('test/test_data/token_response.json');
+      final authJson = jsonDecode(await authData.readAsString());
+      final AuthResponseToken auth = AuthResponseToken.fromJson(authJson);
+      expect(auth.userId, "vPljq5bVCPQXpqWaKhcENJR7bgv2");
       expect(auth.toJson(), authJson);
     });
   });

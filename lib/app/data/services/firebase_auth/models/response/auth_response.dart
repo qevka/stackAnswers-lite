@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stack_answers_lite/app/models/users/user.dart';
 
 part 'auth_response.g.dart';
 
@@ -19,22 +20,23 @@ class AuthResponse {
   /// [kind] identifies the type of resource being returned from the server
   /// ex. for signing up a new user the result is "identitytoolkit#SignupNewUserResponse"
   /// or for logging in the result is "identitytoolkit#VerifyPasswordResponse"
-  final String kind;
+  final String? kind;
 
   /// [localId] This will be used as the user ID to uniquely identify users.
-  final String localId;
+  @JsonKey(name: "localId")
+  final String userId;
 
   /// [email] The email of the user making the auth request
   final String email;
 
   /// [displayName] The name of the user (if using google sign in this meta data is included).
-  final String displayName;
+  final String? displayName;
 
   /// [idToken] This is the authToken to be used in database queries ect.. working with the database.
   final String idToken;
 
   /// [registered] A bool determining if the user was successfully registered yet or not.
-  final bool registered;
+  final bool? registered;
 
   /// [refreshToken] Should probably be cached on the clients device. Firebase ID tokens are short lived
   /// and last for an hour; the refresh token can be used to retrieve new ID tokens. Refresh tokens expire
@@ -45,15 +47,19 @@ class AuthResponse {
   final String expiresIn;
 
   AuthResponse(
-      {required this.kind,
-      required this.localId,
+      {this.kind,
+      required this.userId,
       required this.email,
-      required this.displayName,
+      this.displayName,
       required this.idToken,
-      required this.registered,
+      this.registered,
       required this.refreshToken,
       required this.expiresIn});
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) => _$AuthResponseFromJson(json);
   Map<String, dynamic> toJson() => _$AuthResponseToJson(this);
+
+  User toUser() {
+    return User(email: email, id: userId);
+  }
 }

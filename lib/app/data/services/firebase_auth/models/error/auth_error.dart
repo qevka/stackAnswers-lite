@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'auth_error.g.dart';
 
 @JsonSerializable()
-class AuthError {
+class AuthError implements Exception {
   /// [message] The error message
   final AuthErrorMessage message;
 
