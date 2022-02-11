@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
@@ -19,10 +20,9 @@ class LoginController extends GetxController {
     try {
       await FirebaseAuth.login(userRequest: authRequest);
     } on AuthErrorResponse catch (e) {
-      print(e.message);
+      debugPrint(e.message.toString());
       return "error";
     }
-    print(FirebaseAuth.instance.currentUser!.toJson());
     return "Login complete!";
   }
 
