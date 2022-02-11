@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:stack_answers_lite/app/models/users/user.dart';
+
+import '../auth_models.dart';
 
 part 'auth_response.g.dart';
 

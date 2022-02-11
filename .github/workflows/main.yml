@@ -33,3 +33,6 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
+      # test firebase auth API
+      - run: flutter analyze packages/firebase_auth
+      - run: flutter test packages/firebase_auth

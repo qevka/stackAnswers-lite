@@ -1,20 +1,19 @@
 // https://stackoverflow.com/questions/37322747/using-mail-and-password-to-authenticate-via-the-rest-api-firebase
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth/models/auth_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
-import 'package:stack_answers_lite/app/config/firebase.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/models/auth_models.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/models/request/auth_request.dart';
-import 'package:stack_answers_lite/app/data/services/firebase_auth/models/response/auth_response_token.dart';
-import 'package:stack_answers_lite/app/models/users/user.dart';
 
 import 'api_helper.dart';
 import 'models/request/auth_request_token.dart';
 
 class FirebaseAuth {
+  /// [apiKey] the key that is used to authenticate requests
+  late final String apiKey;
+
   /// [client] the http client to be used for this API. It is being passed in for testability.
   final http.Client _client = http.Client();
 
@@ -32,7 +31,9 @@ class FirebaseAuth {
 
   FirebaseAuth._();
 
-  factory FirebaseAuth() {
+  /// @key the api key needed to initialize the service.
+  factory FirebaseAuth({required String key}) {
+    _instance.apiKey = key;
     return _instance;
   }
 
@@ -44,7 +45,7 @@ class FirebaseAuth {
     try {
       response = await ApiHelper(client: _client).post(
           headers: headers,
-          url: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${FirebaseConfig.apiKey}',
+          url: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=$apiKey',
           param: userRequest.toJson());
     } on AuthErrorResponse catch (e, stacktrace) {
       debugPrint(e.toJson().toString() + stacktrace.toString());
@@ -68,7 +69,7 @@ class FirebaseAuth {
     Map<String, String> headers = {"Content-Type": 'application/json'};
     dynamic response = ApiHelper(client: _client).post(
         headers: headers,
-        url: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${FirebaseConfig.apiKey}',
+        url: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=$apiKey',
         param: userRequest.toJson());
     AuthResponse authResponse = AuthResponse.fromJson(response);
     // Update current user
@@ -97,9 +98,7 @@ class FirebaseAuth {
     // Send the request
     try {
       response = ApiHelper(client: _client).post(
-          headers: headers,
-          url: 'https://securetoken.googleapis.com/v1/token?key=${FirebaseConfig.apiKey}',
-          param: requestToken.toJson());
+          headers: headers, url: 'https://securetoken.googleapis.com/v1/token?key=$apiKey', param: requestToken.toJson());
     } on AuthErrorResponse catch (e, stacktrace) {
       debugPrint(e.toString() + stacktrace.toString());
       rethrow;

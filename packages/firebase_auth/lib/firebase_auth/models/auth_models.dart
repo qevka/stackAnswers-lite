@@ -4,3 +4,4 @@ export 'request/auth_request.dart';
 export 'request/auth_request_token.dart';
 export 'response/auth_response.dart';
 export 'response/auth_response_token.dart';
+export 'users/user.dart';
