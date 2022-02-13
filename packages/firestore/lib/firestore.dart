@@ -1,7 +1,24 @@
-library firestore;
+import 'package:http/http.dart' as http;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+class Firestore {
+  /// [apiKey] the key that is used to authenticate requests
+  late final String apiKey;
+
+  /// [client] the http client to be used for this API. It is being passed in for testability.
+  late final http.Client _client;
+
+  Firestore._();
+
+  static late final Firestore _instance;
+
+  static Firestore get instance {
+    return _instance;
+  }
+
+  factory Firestore.init({required String withApiKey, required http.Client client}) {
+    _instance = Firestore._();
+    _instance._client = client;
+    _instance.apiKey = withApiKey;
+    return instance;
+  }
 }
