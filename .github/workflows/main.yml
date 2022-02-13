@@ -36,3 +36,6 @@ jobs:
       # test firebase auth API
       - run: flutter analyze packages/firebase_auth
       - run: flutter test packages/firebase_auth
+      # test firebase auth API
+      - run: flutter analyze packages/firestore
+      - run: flutter test packages/firestore

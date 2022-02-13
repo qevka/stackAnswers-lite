@@ -8,6 +8,8 @@ environment:
 dependencies:
   firebase_auth:
     path: packages/firebase_auth
+  firestore:
+    path: packages/firestore
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter

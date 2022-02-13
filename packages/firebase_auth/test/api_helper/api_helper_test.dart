@@ -7,7 +7,7 @@ import '../mocks/mock_client.dart';
 void main() {
   var client = MockClient();
   var helper = ApiHelper(client: client);
-  var firebaseAuth = FirebaseAuth.init(withApiKey: '1234', client: client);
+  FirebaseAuth.init(withApiKey: '1234', client: client);
   group("API_HELPER", () {
     test("When error returned then throws AuthErrorResponse", () async {
       // Use mockito to mock an http request's response

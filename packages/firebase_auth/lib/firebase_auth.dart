@@ -45,7 +45,6 @@ class FirebaseAuth {
   /// [signup] this function registers a new user in firebase and returns an AuthResponse which includes tokens needed
   /// for future requests and also user IDs for looking up documents.
   static Future<User?> signup({required AuthRequest userRequest}) async {
-    print(userRequest.email);
     Map<String, String> headers = {"Content-Type": 'application/json'};
     http.Response response;
     try {

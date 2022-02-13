@@ -211,6 +211,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  firestore:
+    dependency: "direct main"
+    description:
+      path: "packages/firestore"
+      relative: true
+    source: path
+    version: "0.0.1"
   fixnum:
     dependency: transitive
     description:
