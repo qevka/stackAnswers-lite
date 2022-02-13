@@ -20,14 +20,11 @@ class LoginController extends GetxController {
     AuthRequest authRequest = AuthRequest(email: data.name, password: data.password);
     try {
       await FirebaseAuth.login(userRequest: authRequest);
-      if (FirebaseAuth.instance.currentUser != null) {
-        Get.toNamed(Routes.home);
-      }
     } on AuthErrorResponse catch (e) {
       debugPrint(e.message.toString());
       return e.message.toString();
     }
-    return "Login complete!";
+    return null;
   }
 
   Future<String?> signupUser(SignupData data) async {
@@ -41,7 +38,6 @@ class LoginController extends GetxController {
       debugPrint(e.message.toString());
       return e.message.toString();
     }
-    return "Login complete!";
   }
 
   Future<String?> recoverPassword(String email) async {
@@ -51,8 +47,7 @@ class LoginController extends GetxController {
       debugPrint(e.message.toString());
       return e.message.toString();
     }
-    Get.toNamed(Routes.login);
-    return "Email Sent!";
+    return "Email sent check your email.";
   }
 
   Future<String?> signupConfirm(String error, LoginData data) {

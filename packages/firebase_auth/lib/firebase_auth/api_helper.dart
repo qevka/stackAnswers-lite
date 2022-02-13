@@ -18,19 +18,21 @@ class ApiHelper {
   /// @url the raw url of the end point.
   /// @param the query params that will be passed into the request as a map
   /// @headers The request headers that can be used for setting the content type ect..
-  Future<dynamic> post({required String url, Map? param, Map<String, String>? headers}) async {
+  Future<http.Response> post({required String url, Map? param, Map<String, String>? headers}) async {
     dynamic response;
     try {
       final rawResponse = await _client.post(Uri.parse(url), body: jsonEncode(param), headers: headers);
       response = _response(rawResponse);
     } on SocketException {
       throw Exception('No Internet connection');
+    } on AuthErrorResponse {
+      rethrow;
     }
     return response;
   }
 
   /// [get] a http get request wrapper
-  Future<dynamic> get({required String url, Map<String, String>? headers}) async {
+  Future<http.Response> get({required String url, Map<String, String>? headers}) async {
     dynamic response;
     try {
       final rawResponse = await _client.get(Uri.parse(url), headers: headers);
@@ -42,7 +44,7 @@ class ApiHelper {
   }
 
   /// [delete] A http delete request wrapper
-  Future<dynamic> delete({required String url, Map? param, Map<String, String>? headers}) async {
+  Future<http.Response> delete({required String url, Map? param, Map<String, String>? headers}) async {
     dynamic response;
     try {
       final rawResponse = await _client.delete(Uri.parse(url), body: jsonEncode(param), headers: headers);
@@ -54,11 +56,10 @@ class ApiHelper {
   }
 
   /// This function processes the resulting raw http data and returns it as json or throws it as an AuthErrorReponse.
-  dynamic _response(http.Response response) {
-    if (response.statusCode >= 200 && response.statusCode <= 300) {
-      var responseJson = jsonDecode(response.body);
-      return responseJson;
-    } else if (response.statusCode >= 400 && response.statusCode <= 499) {
+  http.Response _response(http.Response response) {
+    if (response.statusCode >= 200 && response.statusCode <= 399) {
+      return response;
+    } else {
       //Todo make this class more extensible to handle REST API calls to firestore as well.
       throw AuthErrorResponse.fromJson(jsonDecode(response.body)['error']);
     }

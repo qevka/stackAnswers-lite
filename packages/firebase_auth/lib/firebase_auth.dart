@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth/models/auth_models.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
@@ -17,14 +16,14 @@ class FirebaseAuth {
   late final String apiKey;
 
   /// [client] the http client to be used for this API. It is being passed in for testability.
-  final http.Client _client = http.Client();
+  late final http.Client _client;
 
   /// [currentUser] The currently signed in user.
-  late final User? currentUser;
+  late User? currentUser;
 
   /// [authCredentials] The credentials of the currently signed in user this can be used to refresh auth tokens and
   /// authorize REST API calls.
-  late final AuthResponseLogin? authCredentials;
+  late AuthResponseLogin? authCredentials;
 
   final BehaviorSubject<User> _authUserSubject = BehaviorSubject<User>();
 
@@ -36,8 +35,9 @@ class FirebaseAuth {
     return _instance;
   }
 
-  factory FirebaseAuth.init({required String withApiKey}) {
+  factory FirebaseAuth.init({required String withApiKey, required http.Client client}) {
     _instance = FirebaseAuth._();
+    _instance._client = client;
     _instance.apiKey = withApiKey;
     return instance;
   }
@@ -45,8 +45,9 @@ class FirebaseAuth {
   /// [signup] this function registers a new user in firebase and returns an AuthResponse which includes tokens needed
   /// for future requests and also user IDs for looking up documents.
   static Future<User?> signup({required AuthRequest userRequest}) async {
+    print(userRequest.email);
     Map<String, String> headers = {"Content-Type": 'application/json'};
-    dynamic response;
+    http.Response response;
     try {
       response = await ApiHelper(client: instance._client).post(
           headers: headers,
@@ -56,14 +57,12 @@ class FirebaseAuth {
       debugPrint(e.toJson().toString() + stacktrace.toString());
       rethrow;
     }
-    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(response);
+    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(jsonDecode(response.body));
     // Update the current user
     instance.currentUser = authResponse.toUser();
     // Emit a new user in the users stream
     instance._authUserSubject.add(instance.currentUser!);
     // Store the credentials to disk. This makes grabbing the refresh token easy if needed.
-    GetStorage box = GetStorage();
-    box.write('credentials', jsonEncode(authResponse.toJson()));
     _instance.authCredentials = authResponse;
     return instance.currentUser;
   }
@@ -72,7 +71,7 @@ class FirebaseAuth {
   /// for future requests and also user IDs for looking up documents.
   static Future<User?> login({required AuthRequest userRequest}) async {
     Map<String, String> headers = {"Content-Type": 'application/json'};
-    dynamic response;
+    http.Response response;
     try {
       response = await ApiHelper(client: instance._client).post(
           headers: headers,
@@ -83,17 +82,21 @@ class FirebaseAuth {
       rethrow;
     }
 
-    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(response);
+    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(jsonDecode(response.body));
     // Update current user
     instance.currentUser = authResponse.toUser();
     // Emit a new user in the users stream
     instance._authUserSubject.add(instance.currentUser!);
     // Store the credentials to disk. This makes grabbing the refresh token easy if needed.
-    GetStorage box = GetStorage();
+
     // Set the local credentials to the newly fetched ones.
     _instance.authCredentials = authResponse;
-    box.write('credentials', jsonEncode(authResponse.toJson()));
     return instance.currentUser;
+  }
+
+  static signout() {
+    _instance.currentUser = null;
+    _instance.authCredentials = null;
   }
 
   /// [resetPassword] This function sends a password reset email from firebase.
@@ -113,14 +116,8 @@ class FirebaseAuth {
   }
 
   // Todo use this function when invalid/expired token exception is thrown.
-  static Future<void> refreshTokens() async {
-    GetStorage box = GetStorage();
-    // look up credentials from disk.
-    String jsonData = box.read('credentials');
-    // turn them into a AuthResponse Object
-    AuthResponseLogin authResponse = AuthResponseLogin.fromJson(jsonDecode(jsonData));
-    // Turn the response into a RequestToken
-    AuthRequestToken requestToken = AuthRequestToken(refresh_token: authResponse.refreshToken);
+  static Future<AuthResponseLogin> refreshTokens(AuthResponseLogin loginData) async {
+    AuthRequestToken requestToken = AuthRequestToken(refresh_token: loginData.refreshToken);
     Map<String, String> headers = {"Content-Type": 'application/json'};
     dynamic response;
     // Send the request
@@ -135,8 +132,9 @@ class FirebaseAuth {
     }
     AuthResponseToken responseToken = AuthResponseToken.fromJson(response);
     // now that we have the token we need to update the credentials and store it.
-    AuthResponseLogin newCred = responseToken.toAuthResponse(email: authResponse.email);
+    AuthResponseLogin newCred = responseToken.toAuthResponse(email: loginData.email);
+    _instance.currentUser = newCred.toUser();
     _instance.authCredentials = newCred;
-    box.write('credentials', jsonEncode(newCred.toJson()));
+    return newCred;
   }
 }
