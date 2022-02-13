@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
+import 'package:stack_answers_lite/app/routes/app_pages.dart';
 
 class LoginController extends GetxController {
   Rx<int> logoPosition = Rx<int>(-100);
-  //TODO: Implement LoginController
+
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   @override
@@ -14,28 +17,37 @@ class LoginController extends GetxController {
   }
 
   Future<String?> loginUser(LoginData data) async {
-    // try {
-    //   // call Signin API here
-    //   }
-    // } catch (e) {
-    //   return "login failed";
-    // }
-    return "Login complete!";
+    AuthRequest authRequest = AuthRequest(email: data.name, password: data.password);
+    try {
+      await FirebaseAuth.login(userRequest: authRequest);
+    } on AuthErrorResponse catch (e) {
+      debugPrint(e.message.toString());
+      return e.message.toString();
+    }
+    return null;
   }
 
   Future<String?> signupUser(SignupData data) async {
-    // try {
-    //   // call signup api here
-    //   }
-    // } catch (e) {
-    //   return "login failed";
-    // }
-    return 'User registration complete!';
+    AuthRequest authRequest = AuthRequest(email: data.name!, password: data.password!);
+    try {
+      await FirebaseAuth.signup(userRequest: authRequest);
+      if (FirebaseAuth.instance.currentUser != null) {
+        Get.toNamed(Routes.home);
+      }
+    } on AuthErrorResponse catch (e) {
+      debugPrint(e.message.toString());
+      return e.message.toString();
+    }
   }
 
-  Future<String?> recoverPassword(String name) async {
-    return "";
-    // TODO implement password reset here
+  Future<String?> recoverPassword(String email) async {
+    try {
+      await FirebaseAuth.resetPassword(email: email);
+    } on AuthErrorResponse catch (e) {
+      debugPrint(e.message.toString());
+      return e.message.toString();
+    }
+    return "Email sent check your email.";
   }
 
   Future<String?> signupConfirm(String error, LoginData data) {

@@ -6,14 +6,6 @@ import 'package:stack_answers_lite/app/models/models.dart';
 
 void main() {
   group("models", () {
-    test("user", () async {
-      final userData = File('test/test_data/user.json');
-      final userJson = jsonDecode(await userData.readAsString());
-      final User user = User.fromJson(userJson);
-      expect(user.email, "test@gmail.com");
-      expect(user.toJson(), userJson);
-    });
-
     test("question", () async {
       final questionData = File('test/test_data/question.json');
       final questionJson = jsonDecode(await questionData.readAsString());

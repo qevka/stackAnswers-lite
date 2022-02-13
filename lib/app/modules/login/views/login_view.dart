@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
 import 'package:stack_answers_lite/app/modules/login/controllers/login_controller.dart';
+import 'package:stack_answers_lite/app/routes/app_pages.dart';
 
 class LoginView extends GetView<LoginController> {
   @override
@@ -40,13 +42,13 @@ class LoginView extends GetView<LoginController> {
               return controller.signupUser(signupData);
             },
             onSubmitAnimationCompleted: () {
-              // if (FirebaseAuth.instance.currentUser != null) {
-              //   Get.toNamed(Routes.home);
-              // }
+              if (FirebaseAuth.instance.currentUser != null) {
+                Get.toNamed(Routes.home);
+              } else {}
               // TODO implement going to the homeView here.
             },
-            onRecoverPassword: (name) {
-              return controller.recoverPassword(name);
+            onRecoverPassword: (email) {
+              return controller.recoverPassword(email);
               // Show new password dialog
             },
           ),
