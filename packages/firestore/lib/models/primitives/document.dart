@@ -33,7 +33,11 @@ class Document {
         } else if (key2 == "arrayValue") {
           cleanJson[key] = _listHandler(value2);
         } else {
-          cleanJson[key] = value2;
+          if (key2 == "integerValue") {
+            cleanJson[key] = int.parse(value2);
+          } else {
+            cleanJson[key] = value2;
+          }
         }
       });
     });
