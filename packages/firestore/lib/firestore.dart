@@ -22,3 +22,10 @@ class Firestore {
     return instance;
   }
 }
+
+Map<String, dynamic> expandJson(Map<String, dynamic> json) {
+  json.forEach((key, value) {
+    print(value.runtimeType);
+  });
+  return {};
+}
