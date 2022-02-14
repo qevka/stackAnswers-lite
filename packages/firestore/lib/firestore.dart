@@ -49,7 +49,6 @@ Map<String, dynamic> typeWiseMatcher(String key, dynamic value) {
   Map<String, dynamic> nestedJson = {};
   dynamic mutatedValue = value;
   var keyVal = PrimEx.tryParse(value: key.runtimeType.toString()).stringVal;
-  print("key: $key,value: $value, type: ${PrimEx.tryParse(value: key.runtimeType.toString()).stringVal}");
   switch (PrimEx.tryParse(value: key.runtimeType.toString())) {
     case FireTypes.booleanValue:
       mutatedValue = value == "true" ? true : false;
@@ -67,7 +66,6 @@ Map<String, dynamic> typeWiseMatcher(String key, dynamic value) {
       break;
     default:
   }
-  print("key: $key,value: $mutatedValue, type: ${PrimEx.tryParse(value: keyVal.runtimeType.toString()).stringVal}");
   nestedJson[keyVal] = mutatedValue;
   return nestedJson;
 }
