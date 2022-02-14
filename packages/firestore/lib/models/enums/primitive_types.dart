@@ -13,21 +13,36 @@ enum FireTypes {
 }
 
 extension PrimEx on FireTypes {
-  FireTypes tryParse({required String value}) {
-    var val = _types[value];
+  static FireTypes tryParse({required String value}) {
+    var val = _fromRawType[value];
+    assert(val != null, "This type needs to be added to the types string map");
+    return val!;
+  }
+
+  String get stringVal {
+    var val = _stringVal[this];
     assert(val != null, "This type needs to be added to the types string map");
     return val!;
   }
 }
 
-final Map<String, FireTypes> _types = {
-  "stringValue": FireTypes.stringValue,
-  "arrayValue": FireTypes.arrayValue,
-  "booleanValue": FireTypes.booleanValue,
-  "timestampValue": FireTypes.timestampValue,
-  "referenceValue": FireTypes.referenceValue,
-  "doubleValue": FireTypes.doubleValue,
-  "intValue": FireTypes.intValue,
-  "integerValue": FireTypes.integerValue,
-  "mapValue": FireTypes.mapValue
+final Map<FireTypes, String> _stringVal = {
+  FireTypes.stringValue: "stringValue",
+  FireTypes.arrayValue: "arrayValue",
+  FireTypes.booleanValue: "booleanValue",
+  FireTypes.timestampValue: "timestampValue",
+  FireTypes.referenceValue: "referenceValue",
+  FireTypes.doubleValue: "doubleValue",
+  FireTypes.intValue: "intValue",
+  FireTypes.integerValue: "integerValue",
+  FireTypes.mapValue: "mapValue"
+};
+
+final Map<String, FireTypes> _fromRawType = {
+  "int": FireTypes.integerValue,
+  "bool": FireTypes.booleanValue,
+  "_InternalLinkedHashMap<String, dynamic>": FireTypes.mapValue,
+  "List<dynamic>": FireTypes.arrayValue,
+  "String": FireTypes.stringValue,
+  "double": FireTypes.doubleValue
 };

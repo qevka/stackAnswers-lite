@@ -2,7 +2,7 @@
   "name": "projects/stackanswers-lite/databases/(default)/documents/users4/thI5LvOgOAkH8Hwt4JlL",
   "fields": {
     "number": {
-      "integerValue": "200"
+      "integerValue": 200
     },
     "bool": {
       "booleanValue": true
