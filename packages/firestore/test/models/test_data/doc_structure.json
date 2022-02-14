@@ -1,0 +1,52 @@
+{
+  "name": "projects/stackanswers-lite/databases/(default)/documents/users4/thI5LvOgOAkH8Hwt4JlL",
+  "fields": {
+    "number": {
+      "integerValue": 200
+    },
+    "bool": {
+      "booleanValue": true
+    },
+    "map": {
+      "mapValue": {
+        "fields": {
+          "1": {
+            "stringValue": "20"
+          },
+          "2": {
+            "stringValue": "40"
+          }
+        }
+      }
+    },
+    "pointer": {
+      "referenceValue": "projects/stackanswers-lite/databases/(default)/documents/users/1"
+    },
+    "array": {
+      "arrayValue": {
+        "values": [
+          {
+            "stringValue": "1"
+          },
+          {
+            "stringValue": "2"
+          },
+          {
+            "stringValue": "3"
+          }
+        ]
+      }
+    },
+    "hope": {
+      "stringValue": "sdfsdf"
+    },
+    "date": {
+      "timestampValue": "2022-02-01T05:00:00Z"
+    },
+    "float": {
+      "doubleValue": 100.5
+    }
+  },
+  "createTime": "2022-02-13T20:29:47.909905Z",
+  "updateTime": "2022-02-13T20:39:04.235983Z"
+}
